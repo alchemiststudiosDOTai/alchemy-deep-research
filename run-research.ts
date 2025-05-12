@@ -38,6 +38,11 @@ const argv = yargs(hideBin(process.argv))
     description: "Concurrency",
     default: 4,
   })
+  .option("json", {
+    type: "boolean",
+    description: "Also save the research results and report as JSON",
+    default: false,
+  })
   .help()
   .alias("help", "h")
   .parseSync();
@@ -64,4 +69,20 @@ const argv = yargs(hideBin(process.argv))
   fs.writeFileSync("REPORT.md", report);
   console.log("\nREPORT saved to REPORT.md\n");
   console.log(report);
+
+  if (argv.json) {
+    const jsonOut = {
+      query: argv.query,
+      openaiModel: argv["openai-model"],
+      browserModel: argv["browser-model"],
+      depth: argv.depth,
+      breadth: argv.breadth,
+      concurrency: argv.concurrency,
+      learnings: res.learnings,
+      visited: res.visited,
+      markdownReport: report
+    };
+    fs.writeFileSync("REPORT.json", JSON.stringify(jsonOut, null, 2));
+    console.log("REPORT saved to REPORT.json");
+  }
 })();

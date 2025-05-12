@@ -61,6 +61,7 @@ A modern, extensible research automation tool that leverages LLMs, web search, a
 | `--depth`         | Recursion depth (levels of follow-up)               | 1                 |
 | `--breadth`       | Breadth (queries per level)                         | 1                 |
 | `--concurrency`   | Number of queries to process in parallel            | 1                 |
+| `--json`         | Also save the research results and report as JSON   | false             |
 
 ---
 
@@ -94,6 +95,24 @@ MIT
 
 You can customize your research run with the following options:
 
+### Save as JSON
+
+Add the `--json` flag to also save the research results and the markdown report to `REPORT.json`:
+
+```bash
+npx ts-node run-research.ts \
+  --query "How do LLMs handle long-term memory?" \
+  --openai-model "gpt-4o-mini" \
+  --browser-model "gemini-2.0-flash-lite" \
+  --depth 1 \
+  --breadth 1 \
+  --concurrency 1 \
+  --json
+```
+
+This will produce both `REPORT.md` and `REPORT.json` in your working directory.
+
+
 ```sh
 npx ts-node run-research.ts \
   --query "How do LLMs<p align="center">
@@ -105,11 +124,15 @@ npx ts-node run-research.ts \
 
 ## 📦 Installation
 
-Install from npm:
+Install from npm (recommended):
+
+[![npm version](https://img.shields.io/npm/v/alchemy-deep-research?style=flat-square)](https://www.npmjs.com/package/alchemy-deep-research)
 
 ```bash
 npm install alchemy-deep-research
 ```
+
+[View on npm](https://www.npmjs.com/package/alchemy-deep-research)
 
 ---
 
