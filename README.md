@@ -95,11 +95,11 @@ MIT
 
 ---
 
-## CLI Usage
+## Advanced CLI Usage
 
 You can customize your research run with the following options:
 
-### Save as JSON
+### JSON Output
 
 Add the `--json` flag to also save the research results and the markdown report to `REPORT.json`:
 
@@ -119,12 +119,41 @@ This will produce both `REPORT.md` and `REPORT.json` in your working directory.
 
 ```sh
 npx ts-node run-research.ts \
-  --query "How do LLMs<p align="center">
-  <img src="./logo.png" alt="alchemy deep research logo" width="300"/>
-</p>
+  --query "How do LLMs handle long-term memory?" \
+  --openai-model "gpt-4o" \
+  --browser-model "gemini-2.0-flash-lite" \
+  --depth 2 \
+  --breadth 3 \
+  --concurrency 4 \
+  --json
+```
 
-> **Note:** This is an early-stage project. Expect rapid changes! I will be building out more agentic flows and advanced features to enable even better, deeper research in the near future. Feedback and contributions are welcome.
+### Sample Report Output
 
+When you run the tool, it generates a comprehensive markdown report like this example (from a query about LLMs and long-term memory):
+
+```markdown
+# REPORT: How Do LLMs Handle Long-Term Memory?
+
+## Introduction
+Large Language Models (LLMs) have transformed the landscape of artificial intelligence and natural language processing. One of the critical areas of research is how these models can effectively manage long-term memory. This report summarizes recent findings on the mechanisms, challenges, and architectural considerations involved in enhancing LLMs' long-term memory capabilities.
+
+## Key Findings
+
+### 1. Memory Components
+- **Enhancing Memory Retention**: LLMs can significantly improve long-term memory retention and retrieval by incorporating additional memory components. This includes:
+  - **Database Storage**: External databases that allow for the storage of relevant information over extended periods.
+  - **Internal Memory Modules**: Built-in memory systems that help retain context and information.
+
+### 2. Architectural Design Considerations
+- **Storage Capacity**: Effective storage solutions are crucial for maintaining large amounts of information.
+- **Memory Update Mechanisms**: Systems must be in place to update stored information, ensuring it remains relevant.
+- **Integration with Attention Mechanisms**: Attention mechanisms help ensure that responses are contextual and relevant, enhancing the user experience.
+
+## References
+1. Yulleyi. (2023). *Large Language Models (LLM) with Long-Term Memory: Advancements and Opportunities in GenAI*
+2. Arxiv. (2023). *Long-Term Memory in Language Models*
+```
 
 ## 📦 Installation
 
@@ -133,63 +162,9 @@ Install from npm (recommended):
 [![npm version](https://img.shields.io/npm/v/alchemy-deep-research?style=flat-square)](https://www.npmjs.com/package/alchemy-deep-research)
 
 ```bash
-npm install alchemy-deep-research
+npm i alchemy-deep-research
 ```
 
 [View on npm](https://www.npmjs.com/package/alchemy-deep-research)
 
----
-
-# REPORT: Long-Term Memory in Large Language Models (LLMs)" \
-  --openai-model "gpt-4o" \
-  --browser-model "gemini-2.0-flash-lite" \
-  --depth 2 \
-  --breadth 3 \
-  --concurrency 4
-```
-
-### CLI Options
-| Option            | Description                                                         | Default                     |
-|-------------------|---------------------------------------------------------------------|-----------------------------|
-| `--query`         | Main research question or topic                                     | "How do LLMs handle long-term memory?" |
-| `--openai-model`  | OpenAI model for LLM (query/digest) tasks                           | gpt-4o-mini                 |
-| `--browser-model` | LLM model for BrowserUse API extraction                            | gemini-2.0-flash-lite       |
-| `--depth`         | Recursion depth (how many levels of follow-up research)             | 2                           |
-| `--breadth`       | Breadth (number of queries per level)                               | 3                           |
-| `--concurrency`   | How many queries to process in parallel                             | 4                           |
-
----
-
-## Output
-- **LEARNINGS:** Top 2 concise insights from the research process.
-- **SOURCES:** Top 2 URLs visited as sources.
-
----
-
-## Environment Variables
-- `OPENAI_API_KEY` – Your OpenAI API key (required)
-- `FIRECRAWL_KEY` – Your Firecrawl API key (required)
-- `BROWSER_USE_API_KEY` – Your BrowserUse API key (required)
-
----
-
-## Customization
-- You can add new models, change the number of learnings returned, or extend the pipeline logic in `src/pipeline.ts` and `src/llm.ts`.
-- The CLI (`run-research.ts`) is easily extensible for more options (output format, max learnings, etc).
-
----
-
-## Troubleshooting
-- **API Rate Limits:** The pipeline has built-in retry logic for Firecrawl and logs detailed errors for browser extraction.
-- **Empty Results:** Try adjusting your query, increasing breadth/depth, or using a different model.
-
----
-
-## License
-MIT
-
----
-
-## Acknowledgments
-- Built with OpenAI, Firecrawl, and BrowserUse APIs.
-- Inspired by the need for fast, deep, and actionable research.
+> **Note:** This is an early-stage project. Expect rapid changes! I will be building out more agentic flows and advanced features to enable even better, deeper research in the near future.
