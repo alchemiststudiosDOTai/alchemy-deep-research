@@ -1,6 +1,6 @@
 {
     "name": "alchemy-deep-research",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Fast, TypeScript-focused web-research pipeline (Firecrawl + BrowserUse + OpenAI).",
     "main": "dist/index.cjs",
     "module": "dist/index.js",
@@ -13,7 +13,8 @@
         }
     },
     "files": [
-        "dist"
+        "dist",
+        "logo.png"
     ],
     "scripts": {
         "build": "tsc -p tsconfig.build.json",
@@ -28,10 +29,6 @@
     ],
     "author": "@tunahourse21",
     "license": "MIT",
-  "files": [
-    "dist",
-    "logo.png"
-  ],
     "dependencies": {
         "@mendable/firecrawl-js": "^1.24.0",
         "axios": "^1.6.0",

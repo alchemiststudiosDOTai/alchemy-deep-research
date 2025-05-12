@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./logo.png" alt="Alchemy Deep Research Logo" width="300"/>
+</p>
+
 # Alchemy Deep Research
 
 A modern, extensible research automation tool that leverages LLMs, web search, and browser-based extraction to generate actionable, professional reports from the web.
@@ -18,7 +22,7 @@ A modern, extensible research automation tool that leverages LLMs, web search, a
    ```sh
    git clone <your-repo-url>
    cd alchemy-deep-research
-   npm install
+   npm i alchemy-deep-research
    ```
 
 2. **Set up environment variables**

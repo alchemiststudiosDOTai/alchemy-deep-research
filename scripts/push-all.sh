@@ -4,7 +4,10 @@
 set -e
 
 # Add all changes
- git add .
+git add .
+
+# Bump patch version automatically before publishing
+npm version patch --no-git-tag-version
 
 # Commit with a message, or use a default if none provided
 if [ -z "$1" ]; then
@@ -12,6 +15,8 @@ if [ -z "$1" ]; then
 else
   msg="$1"
 fi
+
+git add package.json package-lock.json
 
 git commit -m "$msg"
 
