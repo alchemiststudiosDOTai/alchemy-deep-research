@@ -1,0 +1,3 @@
+The proposed MemoryBank mechanism allows large language models (LLMs) to access and update long-term memories, enhancing their ability to engage in sustained interactions and adapt to user personalities over time.
+
+Inspired by the Ebbinghaus Forgetting Curve, MemoryBank incorporates a selective memory updating process that enables the model to forget less relevant memories while reinforcing important ones, mimicking human-like memory behaviors.

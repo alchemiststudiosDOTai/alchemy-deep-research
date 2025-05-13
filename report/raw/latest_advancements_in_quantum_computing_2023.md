@@ -1,0 +1,3 @@
+In 2023, quantum computing advancements shifted focus from mere hardware performance to practical implementations and modular architectures, enhancing scalability and usability in real-world applications.
+
+IBM's introduction of the Heron processor marks a significant transition toward modular quantum computing, allowing for direct interconnections between multiple processors, which is expected to increase system performance and capability. 

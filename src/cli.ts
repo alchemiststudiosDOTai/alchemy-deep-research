@@ -1,6 +1,9 @@
-import { deepResearch } from "./src/pipeline";
-import { generateReport } from "./src/report";
+#!/usr/bin/env node
+import { deepResearch } from "./pipeline.js";
+import { generateReport } from "./report.js";
 import * as fs from "fs";
+import * as path from "path";
+import { sanitizeQueryForFilename } from "./utils.js"; // Import the utility
 import * as dotenv from "dotenv";
 dotenv.config();
 import yargs from "yargs";
@@ -20,23 +23,23 @@ const argv = yargs(hideBin(process.argv))
   })
   .option("browser-model", {
     type: "string",
-    description: "BrowserUse LLM model (e.g. gemini-2.0-flash-lite)",
-    default: "gemini-2.0-flash-lite",
+    description: "BrowserUse LLM model (e.g. gpt-4.1-mini)",
+    default: "gpt-4.1-mini",
   })
   .option("depth", {
     type: "number",
     description: "Recursion depth",
-    default: 2,
+    default: 1,
   })
   .option("breadth", {
     type: "number",
     description: "Breadth (queries per level)",
-    default: 3,
+    default: 1,
   })
   .option("concurrency", {
     type: "number",
     description: "Concurrency",
-    default: 4,
+    default: 1,
   })
   .option("json", {
     type: "boolean",
@@ -66,8 +69,15 @@ const argv = yargs(hideBin(process.argv))
     res.visited,
     argv["openai-model"]
   );
-  fs.writeFileSync("REPORT.md", report);
-  console.log("\nREPORT saved to REPORT.md\n");
+
+  const reportDir = "report";
+  const cleanedReportDir = path.join(reportDir, "cleaned_report");
+  const sanitizedQuery = sanitizeQueryForFilename(argv.query);
+  // ensureReportDirs in pipeline.ts should have already created these.
+
+  const finalReportMdPath = path.join(cleanedReportDir, `${sanitizedQuery}_summary_report.md`);
+  fs.writeFileSync(finalReportMdPath, report);
+  console.log(`\nREPORT saved to ${finalReportMdPath}\n`);
   console.log(report);
 
   if (argv.json) {
@@ -82,7 +92,8 @@ const argv = yargs(hideBin(process.argv))
       visited: res.visited,
       markdownReport: report
     };
-    fs.writeFileSync("REPORT.json", JSON.stringify(jsonOut, null, 2));
-    console.log("REPORT saved to REPORT.json");
+    const finalReportJsonPath = path.join(cleanedReportDir, `${sanitizedQuery}_summary_report.json`);
+    fs.writeFileSync(finalReportJsonPath, JSON.stringify(jsonOut, null, 2));
+    console.log(`REPORT saved to ${finalReportJsonPath}`);
   }
 })();

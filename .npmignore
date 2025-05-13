@@ -20,7 +20,6 @@ tsconfig.build.json
 # Scripts and examples
 scripts/
 examples/
-prompts/
 
 # Documentation
 REPORT.md
@@ -33,5 +32,4 @@ yarn-debug.log
 yarn-error.log
 
 # Project specific files
-run-research.ts
 test-tinyagent.ts

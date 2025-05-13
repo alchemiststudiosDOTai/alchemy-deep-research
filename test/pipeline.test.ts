@@ -13,7 +13,7 @@ describe('Deep Research Pipeline', () => {
       1, // concurrency
       {
         openaiModel: 'gpt-4o-mini',
-        browserModel: 'gemini-2.0-flash-lite'
+        browserModel: 'gpt-4.1-mini'
       }
     );
     

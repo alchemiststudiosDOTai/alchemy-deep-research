@@ -18,11 +18,16 @@ A modern, extensible research automation tool that leverages LLMs, web search, a
 
 ## 🛠️ Quick Start
 
-1. **Clone the repo & install dependencies**
+1. **Installation**
+   For end-users, install from npm:
    ```sh
-   git clone <your-repo-url>
+   npm install alchemy-deep-research
+   ```
+   For development (to run from source or contribute):
+   ```sh
+   git clone https://github.com/your-username/alchemy-deep-research.git # Replace with your repo URL
    cd alchemy-deep-research
-   npm i alchemy-deep-research
+   npm install # or npm ci
    ```
 
 2. **Set up environment variables**
@@ -36,32 +41,43 @@ A modern, extensible research automation tool that leverages LLMs, web search, a
 3. **Edit the browser extraction prompt (optional)**
    - Customize `prompts/browser-use.md` to change how web content is extracted and summarized.
 
-4. **Run a research query**
+4. **Run a research query (using the installed package)**
    ```sh
-   npx ts-node run-research.ts \
+   alchemy-deep-research \
      --query "How do LLMs handle long-term memory?" \
      --openai-model "gpt-4o-mini" \
-     --browser-model "gemini-2.0-flash-lite" \
-     --depth 1 \
-     --breadth 1 \
-     --concurrency 1
+     --browser-model "gpt-4.1-mini"
    ```
-   - All research and reporting will use the specified OpenAI model for consistency.
+   (If installed locally, you might use `npx alchemy-deep-research ...`)
+   
+   To run from source (after cloning and `npm install`):
+   ```sh
+   npx ts-node src/cli.ts --query "Your query here"
+   # or npm run build && node dist/cli.js --query "Your query here"
+   ```
 
 ---
 
-## 📄 Output
-- **REPORT.md**: After every run, a professional markdown report is generated, summarizing all findings and listing all source URLs.
-- **Console Output**: Key logs, extraction steps, and the final report are printed to the terminal.
+## 📄 Output Structure
+
+The tool generates reports in a structured `report/` directory:
+
+- **`report/raw/`**: Contains detailed LLM outputs for each research query and each piece of browser-enhanced content.
+  - Files are named based on the sanitized query, e.g., `[sanitized_query].md` (learnings) and `[sanitized_query].json` (full digest).
+  - Enhanced content outputs are named like `[sanitized_query]_enhanced_[identifier].md/.json`.
+- **`report/cleaned_report/`**: Contains the final, consolidated summary report.
+  - Named `[sanitized_query]_summary_report.md`.
+  - If the `--json` flag is used, `[sanitized_query]_summary_report.json` is also created here.
+- **Console Output**: Key logs, extraction steps, and the final summary report are also printed to the terminal.
 
 ---
 
 ## ⚙️ CLI Options
 | Option            | Description                                         | Default           |
-|-------------------|-----------------------------------------------------|-------------------|
-| `--query`         | Main research question or topic                     | (required)        |
-| `--openai-model`  | OpenAI model for LLM and report (e.g. gpt-4o-mini)  | gpt-4o-mini       |
-| `--browser-model` | BrowserUse model for extraction                     | gemini-2.0-flash-lite |
+|-------------------|-----------------------------------------------------|---------------------------------------|
+| `--query`         | Main research question or topic                     | "How do LLMs handle long-term memory?" |
+| `--openai-model`  | OpenAI model for LLM and report (e.g. gpt-4o-mini)  | gpt-4o-mini                           |
+| `--browser-model` | BrowserUse model for extraction                     | gpt-4.1-mini                     |
 | `--depth`         | Recursion depth (levels of follow-up)               | 1                 |
 | `--breadth`       | Breadth (queries per level)                         | 1                 |
 | `--concurrency`   | Number of queries to process in parallel            | 1                 |
@@ -104,24 +120,21 @@ You can customize your research run with the following options:
 Add the `--json` flag to also save the research results and the markdown report to `REPORT.json`:
 
 ```bash
-npx ts-node run-research.ts \
+alchemy-deep-research \
   --query "How do LLMs handle long-term memory?" \
   --openai-model "gpt-4o-mini" \
-  --browser-model "gemini-2.0-flash-lite" \
-  --depth 1 \
-  --breadth 1 \
-  --concurrency 1 \
+  --browser-model "gpt-4.1-mini" \
   --json
 ```
 
-This will produce both `REPORT.md` and `REPORT.json` in your working directory.
+This will produce `how_do_llms_handle_long_term_memory_summary_report.md` and `how_do_llms_handle_long_term_memory_summary_report.json` in the `report/cleaned_report/` directory.
 
 
 ```sh
-npx ts-node run-research.ts \
-  --query "How do LLMs handle long-term memory?" \
+alchemy-deep-research \
+  --query "Latest advancements in AI ethics" \
   --openai-model "gpt-4o" \
-  --browser-model "gemini-2.0-flash-lite" \
+  --browser-model "gpt-4.1-mini" \
   --depth 2 \
   --breadth 3 \
   --concurrency 4 \
@@ -155,16 +168,59 @@ Large Language Models (LLMs) have transformed the landscape of artificial intell
 2. Arxiv. (2023). *Long-Term Memory in Language Models*
 ```
 
-## 📦 Installation
+## 📦 Using as a Library (Programmatic Usage)
 
-Install from npm (recommended):
+You can also use `alchemy-deep-research` as a library in your own TypeScript/JavaScript projects.
 
-[![npm version](https://img.shields.io/npm/v/alchemy-deep-research?style=flat-square)](https://www.npmjs.com/package/alchemy-deep-research)
+1. **Install the package:**
+   ```bash
+   npm install alchemy-deep-research
+   ```
 
-```bash
-npm i alchemy-deep-research
-```
+2. **Import and use in your code:**
+   ```typescript
+   import {
+     deepResearch,
+     generateReport,
+     DeepResearchOptions,
+     ResearchResult
+   } from 'alchemy-deep-research';
+   import * as dotenv from 'dotenv';
 
-[View on npm](https://www.npmjs.com/package/alchemy-deep-research)
+   dotenv.config(); // Ensure your API keys are loaded from .env
+
+   async function run() {
+     const topic = "Future of renewable energy storage";
+     const options: DeepResearchOptions = { openaiModel: "gpt-4o-mini" };
+     const result: ResearchResult = await deepResearch(topic, 1, 1, 1, options);
+     
+     console.log("Learnings:", result.learnings);
+
+     const reportMd = await generateReport(topic, result.learnings, result.visited, options.openaiModel);
+     console.log("\nReport:\n", reportMd);
+     // You can save reportMd to a file using fs.writeFile
+   }
+
+   run();
+   ```
+
+For a more detailed example, see [`examples/programmatic_usage.ts`](./examples/programmatic_usage.ts).
+
+### ESM Package
+Please note that `alchemy-deep-research` is an ES Module package (`"type": "module"`). Ensure your project is configured to work with ESM packages if you're importing it.
+
+---
+
+## 📜 License
+MIT
+
+---
+
+## 🙏 Acknowledgments
+- Built with OpenAI, Firecrawl, and BrowserUse APIs.
+- Inspired by the need for fast, deep, and actionable research.
+
+
+---
 
 > **Note:** This is an early-stage project. Expect rapid changes! I will be building out more agentic flows and advanced features to enable even better, deeper research in the near future.

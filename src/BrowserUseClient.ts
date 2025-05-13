@@ -1,4 +1,6 @@
 import axios from "axios";
+import { URL } from "url";
+import * as path from "path";
 
 export interface BrowserUseOptions {
   apiKey?: string;
@@ -68,7 +70,7 @@ export class BrowserUseClient {
   /** Fire-and-forget wrapper that blocks until “finished” or failure */
   async renderAndExtract(
     url: string,
-    llmModel = "gemini-2.0-flash-lite",
+    llmModel = "gpt-4.1-mini",
     pollMs = 5_000,
     options: {
       save_browser_data?: boolean;
@@ -80,16 +82,16 @@ export class BrowserUseClient {
     let task: string;
     const fs = await import('fs/promises');
     try {
-      const promptTemplate = await fs.readFile(
-        __dirname + '/../prompts/browser-use.md', 'utf8'
-      );
+      const currentDir = path.dirname(new URL(import.meta.url).pathname);
+      const promptPath = path.join(currentDir, '..', 'prompts', 'browser-use.md');
+      const promptTemplate = await fs.readFile(promptPath, 'utf8');
       // Use everything up to the first code block or end of file
       const promptBody = promptTemplate.split('```')[0].trim();
       task = promptBody.replace(/\{\{URL\}\}|\{url\}/gi, url);
       console.log(`[BROWSER-USE] Using prompt from prompts/browser-use.md`);
     } catch (e) {
       task = `Go to ${url}. Extract the primary textual content as markdown.`;
-      console.warn('[BROWSER-USE] Failed to load custom prompt, using default.', e);
+      console.warn('[BROWSER-USE] WARNING: Custom prompt "prompts/browser-use.md" missing. Using default prompt.', e);
     }
     console.log(`[BROWSER-USE] Using model: ${llmModel} for extraction on: ${url}`);
     const id = await this.runTask(task, llmModel, options);
