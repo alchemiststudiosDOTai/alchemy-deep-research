@@ -3,13 +3,13 @@
     "version": "0.1.5",
     "description": "Fast, TypeScript-focused web-research pipeline (Firecrawl + BrowserUse + OpenAI).",
     "type": "module",
-    "main": "dist/index.js",
+    "main": "dist/cjs/index.js",
     "module": "dist/index.js",
     "types": "dist/index.d.ts",
     "exports": {
         ".": {
             "import": "./dist/index.js",
-            "require": "./dist/index.cjs",
+            "require": "./dist/cjs/index.js",
             "types": "./dist/index.d.ts"
         }
     },
@@ -22,7 +22,9 @@
         "alchemy-deep-research": "./dist/cli.js"
     },
     "scripts": {
-        "build": "tsc -p tsconfig.build.json",
+        "build:esm": "tsc -p tsconfig.build.json",
+        "build:cjs": "bash scripts/build-cjs.sh",
+        "build": "npm run build:esm && npm run build:cjs",
         "prepublishOnly": "npm run build",
         "test": "node --test"
     },

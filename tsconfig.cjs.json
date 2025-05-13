@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.json", // Inherit common settings
+  "compilerOptions": {
+    "module": "CommonJS",        // Output CommonJS modules
+    "outDir": "dist/cjs",        // Output CJS files to dist/cjs/
+    "declaration": false,        // ESM build will create declarations in dist/
+    // Ensure other necessary options like target, esModuleInterop are inherited
+    // from tsconfig.json or explicitly set if different for CJS.
+    // "rootDir": "src" should be inherited.
+    // Ensure "rootDir": "src" is inherited or set if not.
+    // Ensure "esModuleInterop": true is inherited or set.
+  },
+  "include": ["src/**/*"], // Compile all files from src
+  "exclude": [
+    "node_modules", 
+    "dist", // Exclude the main dist to avoid conflicts
+    "test", 
+    "**/*.test.ts", 
+    "**/*.spec.ts",
+    "examples" // Exclude examples from this specific build
+  ] 
+}
