@@ -41,16 +41,20 @@ A modern, extensible research automation tool that leverages LLMs, web search, a
 3. **Edit the browser extraction prompt (optional)**
    - Customize `prompts/browser-use.md` to change how web content is extracted and summarized.
 
-4. **Run a research query (using the installed package)**
+4. **Run a research query**
+   After installing the package locally in your project (`npm install alchemy-deep-research`):
    ```sh
-   alchemy-deep-research \
+   npx alchemy-deep-research \
      --query "How do LLMs handle long-term memory?" \
      --openai-model "gpt-4o-mini" \
      --browser-model "gpt-4.1-mini"
    ```
-   (If installed locally, you might use `npx alchemy-deep-research ...`)
+   If you installed the package globally (`npm install -g alchemy-deep-research`), you can omit `npx`:
+   ```sh
+   alchemy-deep-research --query "Your query here"
+   ```
    
-   To run from source (after cloning and `npm install`):
+   To run from source (after cloning and `npm install` in the package directory):
    ```sh
    npx ts-node src/cli.ts --query "Your query here"
    # or npm run build && node dist/cli.js --query "Your query here"
