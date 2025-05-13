@@ -1,9 +1,10 @@
 {
   "extends": "./tsconfig.json", // Inherit common settings
   "compilerOptions": {
-    "module": "CommonJS",        // Output CommonJS modules
-    "outDir": "dist/cjs",        // Output CJS files to dist/cjs/
-    "declaration": false,        // ESM build will create declarations in dist/
+    "module": "CommonJS",
+    "moduleResolution": "Node",  // Compatible with "module": "CommonJS"
+    "outDir": "dist/cjs",
+    "declaration": false,
     // Ensure other necessary options like target, esModuleInterop are inherited
     // from tsconfig.json or explicitly set if different for CJS.
     // "rootDir": "src" should be inherited.
