@@ -1,6 +1,6 @@
 {
     "name": "alchemy-deep-research",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "Fast, TypeScript-focused web-research pipeline (Firecrawl + BrowserUse + OpenAI).",
     "type": "module",
     "main": "dist/index.js",
