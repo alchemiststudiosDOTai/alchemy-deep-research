@@ -7,6 +7,7 @@ import {
   SearchDigestT,
 } from "./llm.js";
 import { firecrawlSearch } from "./firecrawl.js";
+import { headlessSearch } from "./headlessSearch.js";
 import {
   ensureReportDirs,
   // hashUrl, // No longer needed if filenames are query-based for per-item reports
@@ -22,6 +23,7 @@ export interface ResearchResult {
 export interface DeepResearchOptions {
   openaiModel?: string;
   browserModel?: string;
+  useHeadlessSearch?: boolean;
 }
 
 export async function deepResearch(
@@ -34,6 +36,7 @@ export async function deepResearch(
   await ensureReportDirs();
   const limit = pLimit(concurrency);
   const browser = new BrowserUseClient();
+  const searchFn = opts.useHeadlessSearch ? headlessSearch : firecrawlSearch;
 
   async function recurse(
     t: string,
@@ -48,8 +51,8 @@ export async function deepResearch(
     console.log('QUERIES:', queries);
     const tasks = queries.map((q: SearchQueryT) =>
       limit(async () => {
-        const fc = await firecrawlSearch(q.query, 2);
-        console.log(`FIRECRAWL for query "${q.query}":`, fc);
+        const fc = await searchFn(q.query, 2);
+        console.log(`SEARCH results for query "${q.query}":`, fc);
 
         // Raw markdown from firecrawl (f.markdown) is no longer saved per new requirements.
         // Raw browser extraction result (result from browser.renderAndExtract) is no longer saved directly.

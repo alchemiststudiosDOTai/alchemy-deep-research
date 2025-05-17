@@ -41,6 +41,11 @@ const argv = yargs(hideBin(process.argv))
     description: "Concurrency",
     default: 1,
   })
+  .option("headless-search", {
+    type: "boolean",
+    description: "Use headless browser for search",
+    default: false,
+  })
   .option("json", {
     type: "boolean",
     description: "Also save the research results and report as JSON",
@@ -59,6 +64,7 @@ const argv = yargs(hideBin(process.argv))
     {
       openaiModel: argv["openai-model"],
       browserModel: argv["browser-model"],
+      useHeadlessSearch: argv["headless-search"],
     }
   );
 

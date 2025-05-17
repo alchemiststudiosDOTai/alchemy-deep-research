@@ -10,6 +10,7 @@ A modern, extensible research automation tool that leverages LLMs, web search, a
 - **Automated Research Pipeline**: Generates focused queries, scrapes the web, summarizes findings, and recursively explores follow-up questions.
 - **Prompt-Driven Extraction**: Uses an editable prompt file (`prompts/browser-use.md`) for browser-based content extraction—customize instructions without code changes.
 - **Multi-Model Support**: Choose your preferred OpenAI and BrowserUse LLM models at runtime.
+- **Headless Browser Search**: Optionally gather pages using a Puppeteer-based search agent.
 - **Flexible CLI**: Control depth, breadth, concurrency, and models from the command line.
 - **Professional Reports**: Automatically generates a clean, markdown-formatted `REPORT.md` with findings and references after each run.
 - **Environment-First**: All API keys are loaded from `.env` for security and flexibility.
@@ -44,11 +45,12 @@ A modern, extensible research automation tool that leverages LLMs, web search, a
 4. **Run a research query**
    After installing the package locally in your project (`npm install alchemy-deep-research`):
    ```sh
-   npx alchemy-deep-research \
-     --query "How do LLMs handle long-term memory?" \
-     --openai-model "gpt-4o-mini" \
-     --browser-model "gpt-4.1-mini"
-   ```
+  npx alchemy-deep-research \
+    --query "How do LLMs handle long-term memory?" \
+    --openai-model "gpt-4o-mini" \
+    --browser-model "gpt-4.1-mini" \
+    --headless-search
+  ```
    If you installed the package globally (`npm install -g alchemy-deep-research`), you can omit `npx`:
    ```sh
    alchemy-deep-research --query "Your query here"
@@ -85,6 +87,7 @@ The tool generates reports in a structured `report/` directory:
 | `--depth`         | Recursion depth (levels of follow-up)               | 1                 |
 | `--breadth`       | Breadth (queries per level)                         | 1                 |
 | `--concurrency`   | Number of queries to process in parallel            | 1                 |
+| `--headless-search` | Use a Puppeteer-based search agent                 | false          |
 | `--json`         | Also save the research results and report as JSON   | false             |
 
 ---
